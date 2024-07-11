@@ -1,10 +1,10 @@
 import express from "express";
-import { login, regiter } from "../services/userServices";
+import { login, register } from "../services/userServices";
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
-  const { data, statusCode } = await regiter({
+  const { data, statusCode } = await register({
     firstName,
     lastName,
     email,

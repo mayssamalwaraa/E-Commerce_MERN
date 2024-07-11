@@ -7,7 +7,7 @@ export interface regiterParams {
   email: string;
   password: string;
 }
-export const regiter = async ({
+export const register = async ({
   firstName,
   lastName,
   email,
