@@ -4,33 +4,27 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../constants/baseURL";
 import { useAuth } from "../context/Auth/authContect";
 
-const RegisterPage = () => {
+const LoginPage = () => {
   const [error, setError] = useState("");
-  const firstNameRef = useRef<HTMLInputElement>(null);
-  const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const { login } = useAuth();
   const navigate = useNavigate();
   const submit = async () => {
-    const firstName = firstNameRef.current?.value;
-    const lastName = lastNameRef.current?.value;
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
 
     //validate the form user data
-    if (!firstName || !lastName || !email || !password) {
+    if (!email || !password) {
       return;
     }
     //create the API
-    const response = await fetch(`${BASE_URL}/user/register`, {
+    const response = await fetch(`${BASE_URL}/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        firstName,
-        lastName,
         email,
         password,
       }),
@@ -59,7 +53,7 @@ const RegisterPage = () => {
           mt: 4,
         }}
       >
-        <Typography variant="h2">Register New Account</Typography>
+        <Typography variant="h2">Login to your Account</Typography>
         <Box
           sx={{
             display: "flex",
@@ -71,12 +65,6 @@ const RegisterPage = () => {
             p: 2,
           }}
         >
-          <TextField
-            inputRef={firstNameRef}
-            label="First Name"
-            name="firstName"
-          />
-          <TextField inputRef={lastNameRef} label="Last Name" name="lastName" />
           <TextField inputRef={emailRef} label="Email" name="email" />
           <TextField
             inputRef={passwordRef}
@@ -85,7 +73,7 @@ const RegisterPage = () => {
             type="password"
           />
           <Button onClick={submit} variant="contained">
-            Register
+            Login
           </Button>
           {error && <Typography sx={{ color: "red" }}>{error}</Typography>}
         </Box>
@@ -93,4 +81,4 @@ const RegisterPage = () => {
     </Container>
   );
 };
-export default RegisterPage;
+export default LoginPage;
