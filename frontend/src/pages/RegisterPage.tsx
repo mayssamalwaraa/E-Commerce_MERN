@@ -1,6 +1,7 @@
 import { Box, Container, TextField, Typography, Button } from "@mui/material";
 import { useRef, useState } from "react";
 import { BASE_URL } from "../constants/baseURL";
+import { useAuth } from "../context/Auth/authContect";
 
 const RegisterPage = () => {
   const [error, setError] = useState("");
@@ -8,6 +9,7 @@ const RegisterPage = () => {
   const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const { login } = useAuth();
 
   const submit = async () => {
     const firstName = firstNameRef.current?.value;
@@ -15,6 +17,11 @@ const RegisterPage = () => {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
 
+    //validate the form user data
+    if (!firstName || !lastName || !email || !password) {
+      return;
+    }
+    //create the API
     const response = await fetch(`${BASE_URL}/user/register`, {
       method: "POST",
       headers: {
@@ -32,8 +39,12 @@ const RegisterPage = () => {
         "unable to add new user,try to user different credientials"
       );
     }
-    const data = await response.json();
-    console.log(data);
+    const token = await response.json();
+    if (!token) {
+      setError("Incorrect token");
+      return;
+    }
+    login(email, token);
   };
   return (
     <Container>
