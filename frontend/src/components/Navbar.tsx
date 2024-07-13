@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 const pages = ["Products", "Pricing", "Blog"];
 
 function Navbar() {
-  const { username, isAuthonticated } = useAuth();
+  const { username, isAuthonticated, logout } = useAuth();
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -44,6 +44,11 @@ function Navbar() {
   };
   const handleLogin = () => {
     navigate("/login");
+  };
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+    handleCloseUserMenu();
   };
 
   return (
@@ -178,7 +183,7 @@ function Navbar() {
                   <MenuItem onClick={handleCloseUserMenu}>
                     <Typography textAlign="center">My orders</Typography>
                   </MenuItem>
-                  <MenuItem onClick={handleCloseUserMenu}>
+                  <MenuItem onClick={handleLogout}>
                     <Typography textAlign="center">Log out</Typography>
                   </MenuItem>
                 </Menu>
