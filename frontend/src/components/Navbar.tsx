@@ -12,8 +12,9 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { useAuth } from "../context/Auth/authContect";
-import { Grid } from "@mui/material";
+import { Badge, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const pages = ["Products", "Pricing", "Blog"];
@@ -49,6 +50,9 @@ function Navbar() {
     logout();
     navigate("/");
     handleCloseUserMenu();
+  };
+  const handleCart = () => {
+    navigate("/cart");
   };
 
   return (
@@ -141,7 +145,19 @@ function Navbar() {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box
+            display={"flex"}
+            flexDirection={"row"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            gap={4}
+          >
+            <IconButton aria-label="cart" onClick={handleCart}>
+              <Badge badgeContent={4} color="secondary">
+                <ShoppingCart />
+              </Badge>
+            </IconButton>
+
             {isAuthonticated ? (
               <>
                 <Tooltip title="Open settings">
