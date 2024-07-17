@@ -8,6 +8,7 @@ import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import OrdersuccessPage from "./pages/OrdersuccessPage";
 import RegisterPage from "./pages/RegisterPage";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/Cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/order-success" element={<OrdersuccessPage />} />
             </Route>
           </Routes>
         </BrowserRouter>
