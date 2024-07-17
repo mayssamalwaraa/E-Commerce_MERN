@@ -31,7 +31,7 @@ export default function ProductCard({ _id, title, image, price }: Props) {
           size="small"
           onClick={() => addItemToCart(_id)}
         >
-          Add to Card
+          Add to Cart
         </Button>
       </CardActions>
     </Card>

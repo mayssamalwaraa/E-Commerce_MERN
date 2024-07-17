@@ -12,11 +12,20 @@ const createCartFotUser = async ({ userId }: createCartFotUser) => {
 };
 interface getActiveCartForUser {
   userId: string;
+  populateProduct?: boolean;
 }
 export const getActiveCartForUser = async ({
   userId,
+  populateProduct,
 }: getActiveCartForUser) => {
-  let cart = await cartModel.findOne({ userId, status: "active" });
+  let cart;
+  if (populateProduct) {
+    cart = await cartModel
+      .findOne({ userId, status: "active" })
+      .populate("items.product");
+  } else {
+    cart = await cartModel.findOne({ userId, status: "active" });
+  }
 
   if (!cart) {
     cart = await createCartFotUser({ userId });
@@ -63,8 +72,12 @@ export const addItemToCart = async ({
     quantity: quantity,
   });
   cart.totalAmount += product.price * quantity;
-  const updatedCart = await cart.save();
-  return { data: updatedCart, statusCode: 200 };
+  await cart.save();
+
+  return {
+    data: await getActiveCartForUser({ userId, populateProduct: true }),
+    statusCode: 200,
+  };
 };
 interface updateItemToCart {
   productId: any;
@@ -98,8 +111,11 @@ export const updateItemToCart = async ({
   let total = calcuateCartTotalItem({ cartItems: otherItemsInCart });
   total += existsInCart.unitPrice * existsInCart.quantity;
   cart.totalAmount = total;
-  const updateCart = await cart.save();
-  return { data: updateCart, statusCode: 200 };
+  await cart.save();
+  return {
+    data: await getActiveCartForUser({ userId, populateProduct: true }),
+    statusCode: 200,
+  };
 };
 interface deleteItemInCart {
   productId: any;
@@ -127,8 +143,11 @@ export const deleteItemInCart = async ({
   let total = calcuateCartTotalItem({ cartItems: otherItemsInCart });
   cart.items = otherItemsInCart;
   cart.totalAmount = total;
-  const updateCart = await cart.save();
-  return { data: updateCart, statusCode: 200 };
+  await cart.save();
+  return {
+    data: await getActiveCartForUser({ userId, populateProduct: true }),
+    statusCode: 200,
+  };
 };
 
 const calcuateCartTotalItem = ({ cartItems }: { cartItems: ICartItem[] }) => {

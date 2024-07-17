@@ -16,7 +16,7 @@ const router = express.Router();
 router.get("/", validateJWT, async (req: ExtendRequest, res) => {
   try {
     const userId = req.user._id;
-    const cart = await getActiveCartForUser({ userId });
+    const cart = await getActiveCartForUser({ userId, populateProduct: true });
     res.status(200).send(cart);
   } catch (err) {
     res.status(500).send("something get wrong");
@@ -29,7 +29,7 @@ router.post("/items", validateJWT, async (req: ExtendRequest, res) => {
     const response = await addItemToCart({ userId, productId, quantity });
     res.status(response.statusCode).send(response.data);
   } catch (err) {
-    res.status(500).send("something get wrong");
+    res.status(500).send("something get wrong post");
   }
 });
 router.put("/items", validateJWT, async (req: ExtendRequest, res) => {
