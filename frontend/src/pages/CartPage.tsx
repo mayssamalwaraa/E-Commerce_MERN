@@ -7,8 +7,13 @@ import { Box } from "@mui/system";
 import { useCart } from "../context/Cart/CartContext";
 
 const CartPage = () => {
-  const { cartItems, totalAmount, updateItemInCart, removeItemFromCart } =
-    useCart();
+  const {
+    cartItems,
+    totalAmount,
+    updateItemInCart,
+    removeItemFromCart,
+    clearCart,
+  } = useCart();
   const handleQuantity = (productId: string, quantity: number) => {
     if (quantity <= 0) {
       return;
@@ -22,63 +27,85 @@ const CartPage = () => {
   return (
     <Container fixed sx={{ mt: 2 }}>
       <>
-        <Box display={"flex"} flexDirection="column" gap={4}>
-          <Typography variant="h4">My Cart</Typography>
-          {cartItems.map((item) => (
-            <Box
-              display={"flex"}
-              flexDirection={"row"}
-              justifyContent={"space-between"}
-              alignItems={"center"}
-              sx={{
-                borderBottom: 2,
-                borderColor: "#f5f5f5",
-              }}
-            >
+        {cartItems.length ? (
+          <>
+            <Box display={"flex"} flexDirection="column" gap={4}>
               <Box
                 display={"flex"}
                 flexDirection="row"
-                alignItems={"center"}
-                gap={2}
+                justifyContent={"space-between"}
+                sx={{
+                  mb: 4,
+                }}
               >
-                <img src={item.image} width={50} />
-                <Box>
-                  <Typography variant="h5">{item.title}</Typography>
-                  <Typography>
-                    {item.quantity}X{item.unitPrice}$
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    onClick={() => handleRemoveItem(item.productId)}
-                  >
-                    RemoveItem
-                  </Button>
-                </Box>
+                <Typography variant="h4">My Cart</Typography>
+                <Button variant="contained" onClick={clearCart}>
+                  Clear Cart
+                </Button>
               </Box>
-              <ButtonGroup variant="contained" aria-label="Basic button group">
-                <Button
-                  onClick={() =>
-                    handleQuantity(item.productId, item.quantity - 1)
-                  }
+
+              {cartItems.map((item) => (
+                <Box
+                  display={"flex"}
+                  flexDirection={"row"}
+                  justifyContent={"space-between"}
+                  alignItems={"center"}
+                  sx={{
+                    borderBottom: 2,
+                    borderColor: "#f5f5f5",
+                  }}
                 >
-                  -
-                </Button>
-                <Button
-                  onClick={() =>
-                    handleQuantity(item.productId, item.quantity + 1)
-                  }
-                >
-                  +
-                </Button>
-              </ButtonGroup>
+                  <Box
+                    display={"flex"}
+                    flexDirection="row"
+                    alignItems={"center"}
+                    gap={2}
+                  >
+                    <img src={item.image} width={50} />
+                    <Box>
+                      <Typography variant="h5">{item.title}</Typography>
+                      <Typography>
+                        {item.quantity}X{item.unitPrice}$
+                      </Typography>
+                      <Button
+                        variant="contained"
+                        onClick={() => handleRemoveItem(item.productId)}
+                      >
+                        RemoveItem
+                      </Button>
+                    </Box>
+                  </Box>
+                  <ButtonGroup
+                    variant="contained"
+                    aria-label="Basic button group"
+                  >
+                    <Button
+                      onClick={() =>
+                        handleQuantity(item.productId, item.quantity - 1)
+                      }
+                    >
+                      -
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        handleQuantity(item.productId, item.quantity + 1)
+                      }
+                    >
+                      +
+                    </Button>
+                  </ButtonGroup>
+                </Box>
+              ))}
             </Box>
-          ))}
-        </Box>
-        <Box>
-          <Typography variant="h3">
-            Totla Amount : {totalAmount.toFixed(2)} $
-          </Typography>
-        </Box>
+            <Box>
+              <Typography variant="h3">
+                Totla Amount : {totalAmount.toFixed(2)} $
+              </Typography>
+            </Box>
+          </>
+        ) : (
+          <Typography>THe cart is empty ,please add items first</Typography>
+        )}
       </>
     </Container>
   );
