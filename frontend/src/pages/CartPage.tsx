@@ -1,23 +1,57 @@
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import { Box } from "@mui/system";
-import { useEffect, useState } from "react";
-import { BASE_URL } from "../constants/baseURL";
-import { useAuth } from "../context/Auth/authContect";
+
 import { useCart } from "../context/Cart/CartContext";
 
 const CartPage = () => {
-  const { token } = useAuth();
   const { cartItems, totalAmount } = useCart();
-  const [error, setError] = useState("");
 
   return (
-    <Container sx={{ mt: 2 }}>
+    <Container fixed sx={{ mt: 2 }}>
       <>
-        <Typography variant="h4">My Cart</Typography>
-        {cartItems.map((item) => (
-          <Box>{item.title}</Box>
-        ))}
+        <Box display={"flex"} flexDirection="column" gap={4}>
+          <Typography variant="h4">My Cart</Typography>
+          {cartItems.map((item) => (
+            <Box
+              display={"flex"}
+              flexDirection={"row"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              sx={{
+                borderBottom: 2,
+                borderColor: "#f5f5f5",
+              }}
+            >
+              <Box
+                display={"flex"}
+                flexDirection="row"
+                alignItems={"center"}
+                gap={2}
+              >
+                <img src={item.image} width={50} />
+                <Box>
+                  <Typography variant="h5">{item.title}</Typography>
+                  <Typography>
+                    {item.quantity}X{item.unitPrice}$
+                  </Typography>
+                  <Button variant="contained">RemoveItem</Button>
+                </Box>
+              </Box>
+              <ButtonGroup variant="contained" aria-label="Basic button group">
+                <Button>-</Button>
+                <Button>+</Button>
+              </ButtonGroup>
+            </Box>
+          ))}
+        </Box>
+        <Box>
+          <Typography variant="h3">
+            Totla Amount : {totalAmount.toFixed(2)} $
+          </Typography>
+        </Box>
       </>
     </Container>
   );
