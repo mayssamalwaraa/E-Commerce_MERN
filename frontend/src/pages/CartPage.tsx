@@ -5,15 +5,18 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import { Box } from "@mui/system";
 
 import { useCart } from "../context/Cart/CartContext";
-import { redirectDocument } from "react-router-dom";
 
 const CartPage = () => {
-  const { cartItems, totalAmount, updateItemInCart } = useCart();
+  const { cartItems, totalAmount, updateItemInCart, removeItemFromCart } =
+    useCart();
   const handleQuantity = (productId: string, quantity: number) => {
     if (quantity <= 0) {
       return;
     }
     updateItemInCart(productId, quantity);
+  };
+  const handleRemoveItem = (productId: string) => {
+    removeItemFromCart(productId);
   };
 
   return (
@@ -44,7 +47,12 @@ const CartPage = () => {
                   <Typography>
                     {item.quantity}X{item.unitPrice}$
                   </Typography>
-                  <Button variant="contained">RemoveItem</Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleRemoveItem(item.productId)}
+                  >
+                    RemoveItem
+                  </Button>
                 </Box>
               </Box>
               <ButtonGroup variant="contained" aria-label="Basic button group">
