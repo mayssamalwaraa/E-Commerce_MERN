@@ -16,11 +16,13 @@ import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { useAuth } from "../context/Auth/authContect";
 import { Badge, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/Cart/CartContext";
 
 const pages = ["Products", "Pricing", "Blog"];
 
 function Navbar() {
   const { username, isAuthonticated, logout } = useAuth();
+  const { cartItems } = useCart();
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -60,24 +62,29 @@ function Navbar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
+          <Button
+            variant="text"
+            sx={{ color: "#FFF" }}
+            onClick={() => navigate("/")}
           >
-            LOGO
-          </Typography>
-
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="#app-bar-with-responsive-menu"
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              E-Commerce
+            </Typography>
+          </Button>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -153,7 +160,7 @@ function Navbar() {
             gap={4}
           >
             <IconButton aria-label="cart" onClick={handleCart}>
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={cartItems.length} color="secondary">
                 <ShoppingCart />
               </Badge>
             </IconButton>
