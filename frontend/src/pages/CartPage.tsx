@@ -5,6 +5,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import { Box } from "@mui/system";
 
 import { useCart } from "../context/Cart/CartContext";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const {
@@ -14,6 +15,7 @@ const CartPage = () => {
     removeItemFromCart,
     clearCart,
   } = useCart();
+  const navigate = useNavigate();
   const handleQuantity = (productId: string, quantity: number) => {
     if (quantity <= 0) {
       return;
@@ -22,6 +24,9 @@ const CartPage = () => {
   };
   const handleRemoveItem = (productId: string) => {
     removeItemFromCart(productId);
+  };
+  const handleCheckOut = () => {
+    navigate("/checkout");
   };
 
   return (
@@ -97,10 +102,18 @@ const CartPage = () => {
                 </Box>
               ))}
             </Box>
-            <Box>
+            <Box
+              display={"flex"}
+              flexDirection={"row"}
+              justifyContent={"space-between"}
+            >
               <Typography variant="h3">
                 Totla Amount : {totalAmount.toFixed(2)} $
               </Typography>
+              <Button variant="contained" onClick={handleCheckOut}>
+                {" "}
+                go to Check out
+              </Button>
             </Box>
           </>
         ) : (

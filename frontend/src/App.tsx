@@ -5,6 +5,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AuthProvider from "./context/Auth/authProvider";
 import CartProvider from "./context/Cart/CartProvider";
 import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -21,6 +22,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/Cart" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
             </Route>
           </Routes>
         </BrowserRouter>
